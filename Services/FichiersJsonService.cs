@@ -1,17 +1,27 @@
 ﻿using Atelier.Dtos;
+using Atelier.Services.Interfaces;
 using System.Reflection;
 using System.Text.Json;
 
 namespace Atelier.Services;
 
-public static class FichiersJsonService 
+public class FichiersJsonService : IFichiersJsonService
 {
+    private readonly IConfiguration _configuration;
+
+    public FichiersJsonService(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     private const string Key = "FileName";
     private const string Section = "File";
 
-    public static async Task<List<PlayerDto>> GetPlayersFromJsonFile(CancellationToken cancellationToken, IConfiguration configuration)
+    public async Task<List<PlayerDto>> GetPlayersFromJsonFile(CancellationToken cancellationToken)
     {
-        var fileName = configuration.GetRequiredSection(Section)[Key];
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var fileName = _configuration.GetRequiredSection(Section)[Key];
 
         string cheminDAcces = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!, fileName);
         

@@ -11,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c=> c.SwaggerDoc(version, 
     new() {Title = title, Version = version }));
 
-builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddSingleton<IFichiersJsonService, FichiersJsonService>();
+builder.Services.AddSingleton<IPlayerService, PlayerService>();
 
 var app = builder.Build();
 

@@ -5,11 +5,13 @@ namespace Atelier.Services;
 
 public class PlayerService : IPlayerService
 {
+    private readonly IFichiersJsonService _fichiersJsonService;
     private readonly IConfiguration _configuration;
 
-    public PlayerService(IConfiguration configuration)
+    public PlayerService(IConfiguration configuration, IFichiersJsonService fichiersJsonService)
     {
         _configuration = configuration;
+        _fichiersJsonService = fichiersJsonService; 
     }
 
     private const string DecimalDegits = "DecimalDegits";
@@ -17,17 +19,27 @@ public class PlayerService : IPlayerService
     private const string GramsToKilograms = "GramsToKilograms";
     private const string Section = "Config";
 
-    public async Task<PlayerDto?> GetPlayer(int id, CancellationToken cancellationToken) =>
-        (await FichiersJsonService.GetPlayersFromJsonFile(cancellationToken, _configuration))
-            .FirstOrDefault(x => x.Id == id);
+    public async Task<PlayerDto?> GetPlayer(int id, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
 
-    public async Task<List<PlayerDto>> GetPlayers(CancellationToken cancellationToken) =>
-        (await FichiersJsonService.GetPlayersFromJsonFile(cancellationToken, _configuration))
-            .OrderBy(x=>x.Data.Rank).ToList();
+        return (await _fichiersJsonService.GetPlayersFromJsonFile(cancellationToken))
+            .FirstOrDefault(x => x.Id == id);
+    }
+
+    public async Task<List<PlayerDto>> GetPlayers(CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return (await _fichiersJsonService.GetPlayersFromJsonFile(cancellationToken))
+            .OrderBy(x => x.Data.Rank).ToList();
+    }
 
     public async Task<PlayersStatsDto> GetPlayersStats(CancellationToken cancellationToken)
     {
-        var playersFromJson = await FichiersJsonService.GetPlayersFromJsonFile(cancellationToken, _configuration);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var playersFromJson = await _fichiersJsonService.GetPlayersFromJsonFile(cancellationToken);
 
         return playersFromJson.Any() ?
             new() 
