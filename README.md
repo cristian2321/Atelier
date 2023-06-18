@@ -7,3 +7,4 @@
 #	J'ai utilisé les données du fichier json qu'on retrouve sur le site comme donnés de reference
 #	Pour le pays qui a le plus grand ratio de parties gagnées, j'ai utilisé les valeurs de la liste 'Last' et j'ai fait la logique suivant: 1 = victoire, 0 = défaite
 #	Pour le IMC, j'ai arrondi la valeur à 4 décimales
+#	Je n'ai pu ajouter la classe de tests unitaires dans Git alors je l'ai mis en commentaire dans le projet. C'est la classe PlayerServiceTests
