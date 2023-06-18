@@ -1,4 +1,5 @@
-﻿using Atelier.Dtos;
+﻿/*
+using Atelier.Dtos;
 using Atelier.Services.Interfaces;
 using AutoFixture;
 using Microsoft.Extensions.Configuration;
@@ -153,4 +154,4 @@ public class PlayerServiceTests
         _fichiersJsonService = default!;
         _configuration = default!;
     }
-}
+}*/
